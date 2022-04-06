@@ -1,48 +1,50 @@
-
+using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Core.Interfaces;
 
 namespace Infrastructure.Data
 {
     public class CambillingRepository : ICambillingRepository
-    {
-        public Task<IReadOnlyList<Cambilling>> GetCambillingsAsync()
+    {            
+        private readonly StoreContext _context;
+        public CambillingRepository (StoreContext context)
+        {
+            _context = context;           
+        }
+        public async Task<IReadOnlyList<Cambilling>> GetCambillingsAsync()
         {
             throw new NotImplementedException();
         }
-        public Task<Cambilling> GetCambillingByIdAsync(int id)
+        public async Task<Cambilling> GetCambillingByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+//-------------------------------------------
+        public async Task<Forpost> GetForpostByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<IReadOnlyList<Forpost>> GetForpostsAsync()
         {
             throw new NotImplementedException();
         }
 //-------------------------------------------        
-        public Task<Billing> GetBillingByIdAsync(int id)
+        public async Task<Billing> GetBillingByIdAsync(int id)
         {
-            throw new NotImplementedException();
+             return await _context.Billings.FindAsync(id);
         }
-
-        public Task<IReadOnlyList<Billing>> GetBillingsAsync()
+        public async Task<IReadOnlyList<Billing>> GetBillingsAsync()
         {
-            throw new NotImplementedException();
-        }
-//-------------------------------------------
-        public Task<Forpost> GetForpostByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<Forpost>> GetForpostsAsync()
-        {
-            throw new NotImplementedException();
+            return await _context.Billings.ToListAsync();
         }
 //-------------------------------------------
-        public Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FindAsync(id);
         }
-
-        public Task<IReadOnlyList<User>> GetUsersAsync()
+        public async Task<IReadOnlyList<User>> GetUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Users.ToListAsync();
         }       
     }
 }

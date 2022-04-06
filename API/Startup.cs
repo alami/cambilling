@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -15,10 +16,11 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ICambillingRepository, CambillingRepository>();
+            services.AddControllers();
 
             services.AddDbContext<StoreContext>(x => x.UseSqlite
                 (_config.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CamBilling", Version = "v1" });
