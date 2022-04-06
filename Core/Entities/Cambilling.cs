@@ -1,6 +1,6 @@
 namespace Core.Entities
 {
-    public class Userforbil
+    public class Cambilling
     {
         public int Id { get; set; }  
         public string Name { get; set; }

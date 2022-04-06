@@ -9,7 +9,7 @@ namespace Infrastructure.Data
         {
             
         }
-        public DbSet<Userforbil> Userforbils { get; set; }  
+        public DbSet<Cambilling> Cambillings { get; set; }  
         public DbSet<Billing> Billings { get; set; }  
         public DbSet<Forpost> Forposts { get; set; }  
         public DbSet<User> Users { get; set; }  

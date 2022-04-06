@@ -14,6 +14,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    OriginId = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -27,6 +28,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    OriginId = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -40,6 +42,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    OriginId = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -48,7 +51,7 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Userforbils",
+                name: "Cambillings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -60,21 +63,21 @@ namespace Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Userforbils", x => x.Id);
+                    table.PrimaryKey("PK_Cambillings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Userforbils_Billings_BillingId",
+                        name: "FK_Cambillings_Billings_BillingId",
                         column: x => x.BillingId,
                         principalTable: "Billings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Userforbils_Forposts_ForpostId",
+                        name: "FK_Cambillings_Forposts_ForpostId",
                         column: x => x.ForpostId,
                         principalTable: "Forposts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Userforbils_Users_UserId",
+                        name: "FK_Cambillings_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -82,25 +85,25 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Userforbils_BillingId",
-                table: "Userforbils",
+                name: "IX_Cambillings_BillingId",
+                table: "Cambillings",
                 column: "BillingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Userforbils_ForpostId",
-                table: "Userforbils",
+                name: "IX_Cambillings_ForpostId",
+                table: "Cambillings",
                 column: "ForpostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Userforbils_UserId",
-                table: "Userforbils",
+                name: "IX_Cambillings_UserId",
+                table: "Cambillings",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Userforbils");
+                name: "Cambillings");
 
             migrationBuilder.DropTable(
                 name: "Billings");
