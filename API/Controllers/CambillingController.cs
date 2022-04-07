@@ -18,28 +18,61 @@ namespace API.Controllers
         {
             _repo = repo;
         }
-        [HttpGet("UnaccessibleCameras")]
+        [HttpGet("todos")]
         public async Task<ActionResult> GetTaskAsync () {
-
- try {
-    WebRequest request = WebRequest.Create("https://jsonplaceholder.typicode.com/todos/");
-    using (WebResponse response = request.GetResponse())  {
-        using (Stream stream = response.GetResponseStream())  {
-            using (StreamReader reader = new StreamReader(stream)) {
-                return Ok(reader.ReadToEnd());
+            string url = "https://jsonplaceholder.typicode.com/todos/";
+            try {
+                WebRequest request = WebRequest.Create(url);
+                request.Credentials = new NetworkCredential("myLogin", "myPassword");
+                using (WebResponse response = request.GetResponse())  {
+                    using (Stream stream = response.GetResponseStream())  {
+                        using (StreamReader reader = new StreamReader(stream)) {
+                            return Ok(reader.ReadToEnd());
+                        }
+                    }
+                }
+            } catch(WebException ex) {
+                // получаем статус исключения
+                WebExceptionStatus status = ex.Status; 
+                if (status == WebExceptionStatus.ProtocolError)  {
+                    HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
+                    return Ok("Статусный код ошибки: "+ex.Message);
+                }
             }
+            return Ok(url);
         }
-    }
-} catch(WebException ex) {
-    // получаем статус исключения
-    WebExceptionStatus status = ex.Status; 
-    if (status == WebExceptionStatus.ProtocolError)  {
-        HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
-        return Ok("Статусный код ошибки: "+ex.Message);
-    }
-}
-            return Ok('1');
+        [HttpPost]
+        public async Task<ActionResult> PostTaskAsync () { //GetUnavailableCameras
+            string url = "https://ipcam.uzcloud.uz/system-api/GetUnavailableCameras";
+            WebRequest request = WebRequest.Create(url);
+            request.Method = "POST";
+            request.Headers.Add("Authorization", "Basic Og==");
+            request.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+
+            string data = "";
+            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(data);
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = byteArray.Length;
+                    
+            using (Stream dataStream = request.GetRequestStream())
+            {
+                dataStream.Write(byteArray, 0, byteArray.Length);
+            }
+        
+            WebResponse response = await request.GetResponseAsync();
+            using (Stream stream = response.GetResponseStream())
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    return Ok(reader.ReadToEnd());
+                }
+            }
+            response.Close();            
+
+            return Ok("Запрос выполнен...");
         }
+
+
         [HttpGet]
         public async Task<ActionResult<List<Cambilling>>> GetCambillings(){
             var cambillings = await _repo.GetCambillingsAsync();
