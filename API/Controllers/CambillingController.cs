@@ -8,35 +8,26 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class CambillingController : ControllerBase
     {
+        static HttpClient client = new HttpClient();
         private readonly ICambillingRepository _repo;
         public CambillingController(ICambillingRepository repo)
         {
             _repo = repo;
         }
-        [HttpGet]
+        [HttpGet("UnaccessibleCameras")]
         public async Task<ActionResult> GetTaskAsync () {
 
             return Ok('1');
         }
-        [HttpGet("billings/{id}")]
-        public async Task<ActionResult<Billing>>  GetBilling(int id){
-            var billing = await _repo.GetBillingByIdAsync(id);
-            return Ok(billing);
+        [HttpGet]
+        public async Task<ActionResult<List<Cambilling>>> GetCambillings(){
+            var cambillings = await _repo.GetCambillingsAsync();
+            return Ok(cambillings);
         }
-        [HttpGet("billings")]
-        public async Task<ActionResult<List<Billing>>> GetBillings(){
-            var billing = await _repo.GetBillingsAsync();
-            return Ok(billing);
-        }
-        [HttpGet("users/{id}")]
-        public async Task<ActionResult<User>>  GetUser(int id){
-            var user = await _repo.GetUserByIdAsync(id);
-            return Ok(user);
-        }
-        [HttpGet("users")]
-        public async Task<ActionResult<List<User>>> GetUsers(){
-            var users = await _repo.GetUsersAsync();
-            return Ok(users);
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Cambilling>>  GetCambilling(int id){
+            var cambilling = await _repo.GetCambillingByIdAsync(id);
+            return Ok(cambilling);
         }
     }
 }
