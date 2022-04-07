@@ -1,3 +1,7 @@
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +21,23 @@ namespace API.Controllers
         [HttpGet("UnaccessibleCameras")]
         public async Task<ActionResult> GetTaskAsync () {
 
+ try {
+    WebRequest request = WebRequest.Create("https://jsonplaceholder.typicode.com/todos/");
+    using (WebResponse response = request.GetResponse())  {
+        using (Stream stream = response.GetResponseStream())  {
+            using (StreamReader reader = new StreamReader(stream)) {
+                return Ok(reader.ReadToEnd());
+            }
+        }
+    }
+} catch(WebException ex) {
+    // получаем статус исключения
+    WebExceptionStatus status = ex.Status; 
+    if (status == WebExceptionStatus.ProtocolError)  {
+        HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
+        return Ok("Статусный код ошибки: "+ex.Message);
+    }
+}
             return Ok('1');
         }
         [HttpGet]
