@@ -14,11 +14,20 @@ namespace Infrastructure.Data
 //-------------------------------------------
         public async Task<IReadOnlyList<Cambilling>> GetCambillingsAsync()
         {
-            return await _context.Cambillings.ToListAsync();
+            return await _context.Cambillings
+                .Include(u => u.User)
+                .Include(b => b.Billing)
+                .Include(f => f.Forpost)
+                .OrderBy(o=>o.Name)
+                .ToListAsync();
         }
         public async Task<Cambilling> GetCambillingByIdAsync(int id)
         {
-            return await _context.Cambillings.FindAsync(id);
+            return await _context.Cambillings
+                .Include(p => p.User)
+                .Include(p => p.Billing)
+                .Include(p => p.Forpost)                
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 //-------------------------------------------
         public async Task<IReadOnlyList<Forpost>> GetForpostsAsync()

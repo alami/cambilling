@@ -1,0 +1,49 @@
+﻿@page
+@using Core.Entities;
+@model Web.Pages.AccountsModel
+Количество Аккаунтов
+@{
+}
+<div>
+    <h1 class="display-4">Camera Accounts</h1>
+    <p>Аккаунты  от 0 - @Model.forpostAccounts.Count()</p>
+        <table>
+            <tr><th>ID</th>
+                <th>&nbsp;</th>
+                <th>Название</th>
+                <th>&nbsp;</th>
+                <th>Дата создания</th>
+                <th>&nbsp;</th>
+                <th>Номер счета</th>
+                <th>&nbsp;</th>
+                <th>Вкл. / Выкл.</th>
+            </tr>
+        @foreach (ForpostAccount item in Model.forpostAccounts)
+        {
+            <tr><td>@item.ID</td>
+                <td></td>
+                <td>@item.Name</td>
+                <td></td>
+                <td>@item.CreationDate</td>
+                <td></td>
+                <td>@item.ContractNumber</td>
+                <td></td>
+                @if(item.IsActive==1) 
+                    {
+                        <td>Вкл.</td>
+                    } else
+                    {
+                        <td>Выкл.</td>
+                    }
+            </tr>
+        }
+    </table>
+
+
+</div>
+<style>
+table {
+    border-collapse: collapse; 
+    border: 1px solid black;
+}
+</style>

@@ -2,6 +2,7 @@ using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace API.Controllers
 {
@@ -27,15 +28,18 @@ namespace API.Controllers
         }
 //------------------------------------------
         [HttpGet("GetAccounts")]
-        public async Task<ActionResult> GetAccountsAsync () { //GetAccounts
-            ForpostReq tmp =new ForpostReq();            
-            return Ok(await tmp.SendAsync("GetAccounts"));
+        public async Task<List<ForpostAccount>> GetAccountsAsync () {
+            ForpostReq fp =new ForpostReq();
+            var fpRez = await fp.SendAsync("GetAccounts");
+            List<ForpostAccount> forpostAccounts = JsonSerializer.Deserialize<List<ForpostAccount>>(fpRez);
+            return forpostAccounts;
         }        
         [HttpGet("GetUnavailableCameras")]
-        public async Task<ActionResult> GetUnavailableCamerasAsync () { //GetAccounts
+        public async Task<List<Camera>> GetUnavailableCamerasAsync () { //GetAccounts
             ForpostReq fp =new ForpostReq();            
             var fpRez = await fp.SendAsync("GetUnavailableCameras");
-            return Ok(fpRez);
-        }        
+            List<Camera> cameras = JsonSerializer.Deserialize<List<Camera>>(fpRez);
+            return cameras;
+        }
     }
 }

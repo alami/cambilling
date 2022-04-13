@@ -1,10 +1,44 @@
 ﻿@page
+@using Core.Entities;
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Camera Billing</h1>
+    <p>Количество недоступных камер  
+        <button onclick="show()">
+           @Model.unavailableCameras.Count()
+        </button></p>
+    <div id="unavailableCameras">
+           Список недоступных камер
+        <table align="center">
+            <tr><th>CameraID</th>
+                <th>&nbsp;</th>
+                <th>Last Available Date</th>
+            </tr>
+        @foreach (Camera item in Model.unavailableCameras)
+        {
+            <tr><td>@item.CameraID</td>
+                <td></td>
+                <td>@item.LastAvailableDate</td>
+            </tr>
+        }
+    </table></div>
+
+
 </div>
+<style>
+table {
+    border-collapse: collapse; 
+    border: 1px solid black;
+    width: 250px;
+}
+</style>
+<script>
+const element = document.getElementById("unavailableCameras");	// Get element
+let sw=0
+element.style.visibility = "hidden";
+function show() { if (sw) {sw=0;element.style.visibility = "hidden";} else  {sw=1;element.style.visibility = "visible";} }
+</script>
